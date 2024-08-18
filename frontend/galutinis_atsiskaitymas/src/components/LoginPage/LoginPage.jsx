@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +10,12 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
+
+     useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/users")
+        }
+     }, [navigate])
 
     async function handleLogin(e) {
         e.preventDefault();
