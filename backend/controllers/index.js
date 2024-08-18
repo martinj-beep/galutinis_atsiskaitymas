@@ -1,4 +1,54 @@
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 import ClientRegistrationForm from "../models/ClientRegistrationForm.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// admin
+
+export async function registerNewUser(req, res) {
+    const { username, password } = req.body;
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt)
+
+    const newUser = new User ({
+        username,
+        password: hashedPassword
+    })
+
+    await newUser.save();
+
+    res.json(newUser)
+}
+
+export async function loginUser(req, res) {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username })
+
+    if (!user) {
+        return res.status(404).json({ err: "user not found" })
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+
+    if (isPasswordCorrect) {
+        const secretKey = process.env.SECRET_KEY;
+
+        const token = jwt.sign({ id: user._id, username: user.username }, secretKey, { expiresIn: "1h" })
+
+        res.json({ token })
+    } else {
+        res.status(400).json({ message: "password incorrect" })
+    }
+    
+
+}
+
+// user
 
 export async function getUsers(req, res) {
 
@@ -7,7 +57,7 @@ export async function getUsers(req, res) {
     
         res.json(users);
     } catch (error) {
-        res.status(500).json({ error: "Something went wrong" }) // cia gali buti kad reikes atskiro modelio registracijos formai, ir kito modelio esamiems registruotiems
+        res.status(500).json({ error: "Something went wrong" }) 
     }
 }
 
