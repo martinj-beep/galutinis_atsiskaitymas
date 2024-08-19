@@ -1,6 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import "./RegisterPage.module.css"
 
 const API_URL = import.meta.env.VITE_API_HOST
 
