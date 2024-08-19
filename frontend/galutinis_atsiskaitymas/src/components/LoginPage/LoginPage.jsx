@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import style from "./LoginPage.module.css"
 
 const API_URL = import.meta.env.VITE_API_HOST
 
