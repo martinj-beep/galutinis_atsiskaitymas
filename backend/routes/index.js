@@ -12,12 +12,12 @@ router.post("/login", loginUser);
 
 
 
-router.post("/users", validateJwt, validateClientBody, createUser);
+router.post("/users",  validateClientBody, createUser);
 
-router.get("/users", validateJwt, getUsers);
+router.get("/users",  getUsers);
 
-router.put("/users/:id", validateJwt, validateIdParam, validateClientBody, updateUser);
+router.put("/users/:id",  validateIdParam, validateClientBody, updateUser);
 
-router.delete("/users/:id", validateJwt, validateIdParam, deleteUser);
+router.delete("/users/:id",  validateIdParam, deleteUser);
 
 export default router;
